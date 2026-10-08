@@ -1,4 +1,5 @@
 import type { Image } from "./types/image";
+import ImageItem from "./ImageItem";
 
 const images: Image[] = [
   { id: 1, src: "https://picsum.photos/id/1/200/300" },
@@ -12,7 +13,7 @@ const images: Image[] = [
 ];
 
 const Gallery = () => {
-  return images.map((item) => <li key={item.id}>{item.src}</li>);
+  return images.map((item) => <ImageItem key={item.id} image={item} />);
 };
 
 export default Gallery;
