@@ -1,13 +1,11 @@
-import Gallery from "./Gallery"
+import Gallery from "./components/Gallery";
 
-
-function App() { 
-
+function App() {
   return (
     <>
-      <Gallery/>
+      <Gallery />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
