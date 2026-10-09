@@ -1,5 +1,6 @@
-export interface Image{
+export interface ImageType{
     id: number
-    src: string    
+    url: string 
+    description: string  
 }
 

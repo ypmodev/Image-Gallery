@@ -1,11 +1,11 @@
-import type { Image } from "./types/image";
+import type { ImageType } from "./types/image";
 
 interface ImageItemProps {
-  image: Image;
+  imageProp: ImageType;
 }
 
-const ImageItem = ({ image }: ImageItemProps) => {
-  return <img src={image.src} />;
+const ImageItem = ({ imageProp }: ImageItemProps) => {
+  return <img src={imageProp.url} alt={imageProp.description} />;
 };
 
 export default ImageItem;
