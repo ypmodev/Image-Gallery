@@ -3,6 +3,7 @@ import { useState } from "react";
 import ImageItem from "./ImageItem";
 import { imagesData } from "../data/imagesData";
 import type { ImageType } from "../types/image";
+
 import "./Gallery.css";
 
 const Gallery = () => {
