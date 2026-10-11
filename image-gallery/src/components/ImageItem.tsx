@@ -1,5 +1,4 @@
 import type { ImageType } from "../types/image";
-import "./ImageItem.css";
 
 interface ImageItemProps {
   imageProp: ImageType;
@@ -8,11 +7,19 @@ interface ImageItemProps {
 
 const ImageItem = ({ imageProp, isFeatured }: ImageItemProps) => {
   return (
-    <img
-      src={imageProp.url}
-      alt={imageProp.description}
-      className={isFeatured ? "image image--featured" : "image"}
-    />
+    <li
+      className={`aspect-square ${
+        isFeatured ? "lg:col-span-2 lg:row-span-2" : ""
+      }`}
+    >
+      <img
+        src={imageProp.url}
+        alt={imageProp.description}
+        className={`h-full w-full object-cover ${
+          isFeatured ? "lg:col-span-2 lg:row-span-2" : ""
+        }`}
+      />
+    </li>
   );
 };
 
