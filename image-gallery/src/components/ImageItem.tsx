@@ -1,5 +1,4 @@
 import type { ImageType } from "../types/image";
-import "./ImageItem.css";
 
 interface ImageItemProps {
   imageProp: ImageType;
@@ -11,7 +10,9 @@ const ImageItem = ({ imageProp, isFeatured }: ImageItemProps) => {
     <img
       src={imageProp.url}
       alt={imageProp.description}
-      className={isFeatured ? "image image--featured" : "image"}
+      className={`h-full w-full object-cover ${
+        isFeatured ? "lg:col-span-2 lg:row-span-2" : ""
+      }`}
     />
   );
 };
