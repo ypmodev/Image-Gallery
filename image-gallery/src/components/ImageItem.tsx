@@ -18,9 +18,7 @@ const ImageItem = ({ imageProp, isFeatured, onDelete }: ImageItemProps) => {
 
   return (
     <li
-      className={`relative aspect-square ${
-        isFeatured ? "lg:col-span-2 lg:row-span-2" : ""
-      }`}
+      className={`relative ${isFeatured ? "lg:col-span-2 lg:row-span-2" : ""}`}
     >
       <img
         src={imageProp.url}
