@@ -4,12 +4,12 @@ import ImageItem from "./ImageItem";
 import { imagesData } from "../data/imagesData";
 import type { ImageType } from "../types/image";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Gallery = () => {
   const [imagesState, setImagesState] = useState<ImageType[]>(imagesData);
   const [draggedIdState, setDraggedIdState] = useState<number | null>(null);
   const [dragOverIdState, setDragOverIdState] = useState<number | null>(null);
-  const [statusMessage, setStatusMessage] = useState("");
   const [selectedIdsState, setSelectedIdsState] = useState<Set<number>>(
     new Set(),
   );
@@ -27,7 +27,7 @@ const Gallery = () => {
       newSelectedIds.delete(idDelete);
       setSelectedIdsState(newSelectedIds);
 
-      setStatusMessage(`Imagen eliminada. Quedan ${remainingImages.length}.`);
+      toast.success("Imagen eliminada");
     }
   };
 
@@ -41,14 +41,11 @@ const Gallery = () => {
     }
 
     setSelectedIdsState(newSelectedIds);
-    setStatusMessage(`Imágenes seleccionadas: ${newSelectedIds.size}.`);
   };
 
   const handleDeleteSelected = () => {
     const count = selectedIdsState.size;
-    const isConfirmed = window.confirm(
-      `¿Eliminar las imágenes seleccionadas (${count})?`,
-    );
+    const isConfirmed = window.confirm(`¿Eliminar las imágenes seleccionadas?`);
 
     if (isConfirmed) {
       const remainingImages = imagesState.filter(
@@ -57,9 +54,7 @@ const Gallery = () => {
       setImagesState(remainingImages);
       setSelectedIdsState(new Set());
 
-      setStatusMessage(
-        `Imágenes eliminadas: ${count}. Quedan ${remainingImages.length}.`,
-      );
+      toast.success(`Imágenes eliminadas: ${count}`);
     }
   };
 
@@ -97,10 +92,6 @@ const Gallery = () => {
 
   return (
     <>
-      <p role="status" className="sr-only">
-        {statusMessage}
-      </p>
-
       {selectedIdsState.size > 0 && (
         <div className="mb-4 flex justify-end">
           <Button

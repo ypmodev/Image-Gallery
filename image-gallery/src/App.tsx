@@ -1,4 +1,5 @@
 import Gallery from "./components/Gallery";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         </p>
       </header>
       <Gallery />
+      <Toaster />
     </main>
   );
 }
