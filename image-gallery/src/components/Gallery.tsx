@@ -10,7 +10,6 @@ const Gallery = () => {
   const [draggedIdState, setDraggedIdState] = useState<number | null>(null);
   const [dragOverIdState, setDragOverIdState] = useState<number | null>(null);
   const [statusMessage, setStatusMessage] = useState("");
-
   const [selectedIdsState, setSelectedIdsState] = useState<Set<number>>(
     new Set(),
   );
@@ -34,17 +33,21 @@ const Gallery = () => {
 
   const handleToggleSelect = (id: number) => {
     const newSelectedIds = new Set(selectedIdsState);
+
     if (newSelectedIds.has(id)) {
       newSelectedIds.delete(id);
     } else {
       newSelectedIds.add(id);
     }
+
     setSelectedIdsState(newSelectedIds);
+    setStatusMessage(`Imágenes seleccionadas: ${newSelectedIds.size}.`);
   };
+
   const handleDeleteSelected = () => {
     const count = selectedIdsState.size;
     const isConfirmed = window.confirm(
-      `¿Eliminar ${count} imágenes seleccionadas?`,
+      `¿Eliminar las imágenes seleccionadas (${count})?`,
     );
 
     if (isConfirmed) {
@@ -52,9 +55,10 @@ const Gallery = () => {
         (item) => !selectedIdsState.has(item.id),
       );
       setImagesState(remainingImages);
-      setSelectedIdsState(new Set()); // Vacío la selección
+      setSelectedIdsState(new Set());
+
       setStatusMessage(
-        `${count} imágenes eliminadas. Quedan ${remainingImages.length}.`,
+        `Imágenes eliminadas: ${count}. Quedan ${remainingImages.length}.`,
       );
     }
   };
@@ -62,6 +66,7 @@ const Gallery = () => {
   const handleDragStart = (id: number) => {
     setDraggedIdState(id);
   };
+
   const handleDragEnter = (id: number) => {
     setDragOverIdState(id);
   };
@@ -95,13 +100,19 @@ const Gallery = () => {
       <p role="status" className="sr-only">
         {statusMessage}
       </p>
+
       {selectedIdsState.size > 0 && (
         <div className="mb-4 flex justify-end">
-          <Button variant="destructive" onClick={handleDeleteSelected}>
+          <Button
+            variant="destructive"
+            onClick={handleDeleteSelected}
+            className="bg-pink-100 text-red-600 shadow-sm hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white"
+          >
             Eliminar seleccionadas ({selectedIdsState.size})
           </Button>
         </div>
       )}
+
       <ul
         role="list"
         className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-5"
@@ -112,12 +123,12 @@ const Gallery = () => {
             imageProp={item}
             isFeatured={index === 0}
             isSelected={selectedIdsState.has(item.id)}
-            onDelete={handleDelete}
             isDragging={draggedIdState === item.id}
-            onToggleSelect={handleToggleSelect}
             isDragOver={
               dragOverIdState === item.id && draggedIdState !== item.id
             }
+            onDelete={handleDelete}
+            onToggleSelect={handleToggleSelect}
             onDragStart={handleDragStart}
             onDragEnter={handleDragEnter}
             onDrop={handleDrop}
