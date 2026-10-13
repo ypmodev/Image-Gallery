@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 interface ImageItemProps {
   imageProp: ImageType;
   isFeatured: boolean;
+  isSelected: boolean;
   onDelete: (id: number) => void;
+  onToggleSelect: (id: number) => void;
   isDragging: boolean;
   isDragOver: boolean;
   onDragStart: (id: number) => void;
@@ -21,7 +23,9 @@ const ImageItem = ({
   isFeatured,
   isDragging,
   isDragOver,
+  isSelected,
   onDelete,
+  onToggleSelect,
   onDragStart,
   onDragEnter,
   onDrop,
@@ -39,16 +43,18 @@ const ImageItem = ({
   const featuredClasses = isFeatured ? "lg:col-span-2 lg:row-span-2" : "";
   const draggingClasses = isDragging ? "opacity-50" : "";
   const dragOverClasses = isDragOver ? "ring-2 ring-blue-500" : "";
+  const selectedClasses = isSelected ? "ring-4 ring-indigo-600" : "";
 
   return (
     <li
       draggable
+      onClick={() => onToggleSelect(imageProp.id)}
       onDragStart={() => onDragStart(imageProp.id)}
       onDragEnter={() => onDragEnter(imageProp.id)}
       onDragOver={handleDragOver}
       onDrop={() => onDrop(imageProp.id)}
       onDragEnd={onDragEnd}
-      className={`relative cursor-grab rounded-lg  ${featuredClasses} ${draggingClasses} ${dragOverClasses}`}
+      className={`relative cursor-grab rounded-lg ${featuredClasses} ${draggingClasses} ${dragOverClasses} ${selectedClasses}`}
     >
       <img
         src={imageProp.url}
