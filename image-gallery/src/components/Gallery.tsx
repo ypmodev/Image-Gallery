@@ -8,6 +8,7 @@ const Gallery = () => {
   const [imagesState, setImagesState] = useState<ImageType[]>(imagesData);
   const [draggedIdState, setDraggedIdState] = useState<number | null>(null);
   const [dragOverIdState, setDragOverIdState] = useState<number | null>(null);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleDelete = (idDelete: number) => {
     const isConfirmed = window.confirm("¿Deseas eliminar esta imagen?");
@@ -17,6 +18,7 @@ const Gallery = () => {
         (item) => item.id !== idDelete,
       );
       setImagesState(remainingImages);
+      setStatusMessage(`Imagen eliminada. Quedan ${remainingImages.length}.`);
     }
   };
 
@@ -52,25 +54,33 @@ const Gallery = () => {
   };
 
   return (
-    <ul
-      role="list"
-      className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-5"
-    >
-      {imagesState.map((item, index) => (
-        <ImageItem
-          key={item.id}
-          imageProp={item}
-          isFeatured={index === 0}
-          onDelete={handleDelete}
-          isDragging={draggedIdState === item.id}
-          isDragOver={dragOverIdState === item.id && draggedIdState !== item.id}
-          onDragStart={handleDragStart}
-          onDragEnter={handleDragEnter}
-          onDrop={handleDrop}
-          onDragEnd={resetDragState}
-        />
-      ))}
-    </ul>
+    <>
+      <p role="status" className="sr-only">
+        {statusMessage}
+      </p>
+      <ul
+        role="list"
+        className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-5"
+      >
+        {imagesState.map((item, index) => (
+          <ImageItem
+            key={item.id}
+            imageProp={item}
+            isFeatured={index === 0}
+            onDelete={handleDelete}
+            isDragging={draggedIdState === item.id}
+            isDragOver={
+              dragOverIdState === item.id && draggedIdState !== item.id
+            }
+            onDragStart={handleDragStart}
+            onDragEnter={handleDragEnter}
+            onDrop={handleDrop}
+            onDragEnd={resetDragState}
+          />
+        ))}
+      </ul>
+    </>
   );
 };
+
 export default Gallery;

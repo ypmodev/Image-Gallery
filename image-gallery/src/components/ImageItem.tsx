@@ -48,7 +48,7 @@ const ImageItem = ({
       onDragOver={handleDragOver}
       onDrop={() => onDrop(imageProp.id)}
       onDragEnd={onDragEnd}
-      className={`relative cursor-grab rounded-lg ${featuredClasses} ${draggingClasses} ${dragOverClasses}`}
+      className={`relative cursor-grab rounded-lg  ${featuredClasses} ${draggingClasses} ${dragOverClasses}`}
     >
       <img
         src={imageProp.url}
@@ -61,8 +61,8 @@ const ImageItem = ({
         variant="secondary"
         size="icon"
         onClick={handleDeleteClick}
-        aria-label={`Eliminar imagen: ${imageProp.description}`}
-        className="absolute right-2 top-2 rounded-full bg-white/90 text-red-600 hover:bg-red-600 hover:text-white"
+        aria-label={`Eliminar la imagen: ${imageProp.description}`}
+        className="absolute right-2 top-2 rounded-full bg-white/90 text-red-600 hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white"
       >
         <Trash2 aria-hidden="true" />
       </Button>
