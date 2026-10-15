@@ -26,4 +26,13 @@ describe("ImageItem - Renderizado", () => {
 
     expect(screen.getByRole("listitem")).toBeTruthy();
   });
+
+  it("muestra la imagen con src y alt correctos", () => {
+    render(<ImageItem {...props} />);
+
+    const image = screen.getByRole("img");
+
+    expect(image.getAttribute("src")).toBe("/paisaje.jpg");
+    expect(image.getAttribute("alt")).toBe("Paisaje");
+  });
 });
