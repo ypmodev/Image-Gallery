@@ -1,10 +1,9 @@
-import { useState } from "react";
-
 import ImageItem from "./ImageItem";
 import { useImages } from "../hooks/useImageManagement";
 import { useImageSelection } from "../hooks/useImageSelection";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useImageDragAndDrop } from "../hooks/useImageDragAndDrop"; // AÑADIR
 
 const Gallery = () => {
   const { imagesState, filterImagesById, moveImage } = useImages();
@@ -15,8 +14,14 @@ const Gallery = () => {
     clearSelection,
   } = useImageSelection();
 
-  const [draggedIdState, setDraggedIdState] = useState<number | null>(null);
-  const [dragOverIdState, setDragOverIdState] = useState<number | null>(null);
+  const {
+    draggedIdState,
+    dragOverIdState,
+    handleDragStart,
+    handleDragEnter,
+    handleDrop,
+    resetDragState,
+  } = useImageDragAndDrop({ moveImage });
 
   const handleDelete = (idDelete: number) => {
     const isConfirmed = window.confirm("¿Deseas eliminar esta imagen?");
@@ -41,29 +46,6 @@ const Gallery = () => {
     }
   };
 
-  const handleDragStart = (id: number) => {
-    setDraggedIdState(id);
-  };
-
-  const handleDragEnter = (id: number) => {
-    setDragOverIdState(id);
-  };
-
-  const resetDragState = () => {
-    setDraggedIdState(null);
-    setDragOverIdState(null);
-  };
-
-  const handleDrop = (destinationId: number) => {
-    if (draggedIdState === null || draggedIdState === destinationId) {
-      resetDragState();
-      return;
-    }
-
-    moveImage(draggedIdState, destinationId);
-    resetDragState();
-  };
-
   return (
     <>
       {selectedIds.size > 0 && (
@@ -78,10 +60,7 @@ const Gallery = () => {
         </div>
       )}
 
-      <ul
-        role="list"
-        className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-5"
-      >
+      <ul className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-5">
         {imagesState.map((item, index) => (
           <ImageItem
             key={item.id}
