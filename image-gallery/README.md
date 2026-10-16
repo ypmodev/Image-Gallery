@@ -1,75 +1,100 @@
-# React + TypeScript + Vite
+# Image Gallery
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive, responsive image gallery built with **React + TypeScript**: featured image, single and bulk deletion, multiple selection and drag-and-drop reordering.
 
-Currently, two official plugins are available:
+## Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+React · TypeScript · Vite · Tailwind CSS · shadcn/ui · Lucide · Sonner · Vitest + React Testing Library
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Responsive grid: 5 columns on desktop, 4 on tablet and 2 on mobile.
+- The first image is the featured one (spans 2x2 cells on desktop).
+- Single deletion (trash button) and bulk deletion (multiple selection), always with confirmation.
+- Reordering with drag and drop (HTML5 Drag and Drop API).
+- Accessible: descriptive `alt` text, `aria-label` on controls, keyboard-operable selection checkbox and visible focus.
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Requires Node.js 18 or higher.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/ypmodev/Image-Gallery.git
+cd Image-Gallery/image-gallery
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+| Command                 | Description         |
+| ----------------------- | ------------------- |
+| `npm run dev`           | Development server  |
+| `npm run build`         | Production build    |
+| `npm run preview`       | Preview the build   |
+| `npm test`              | Run the tests       |
+| `npm run test:coverage` | Tests with coverage |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
 
 ```
+image-gallery/
+├── docs/                           # README screenshots
+│   ├── screenshot.png
+│   ├── screenshot-selection.png
+│   └── screenshot-mobile.png
+├── src/
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── button.tsx          # shadcn/ui component
+│   │   │   └── sonner.tsx          # Toasts (shadcn/ui + Sonner)
+│   │   ├── Gallery.tsx             # Image list and actions
+│   │   ├── ImageItem.tsx           # Single image card
+│   │   └── ImageItem.test.tsx      # ImageItem tests
+│   ├── data/
+│   │   └── imagesData.ts           # Sample data (picsum.photos)
+│   ├── hooks/
+│   │   ├── useImageDragAndDrop.ts  # Drag state
+│   │   ├── useImageManagement.ts   # Delete and reorder images
+│   │   └── useImageSelection.ts    # Multiple selection
+│   ├── lib/
+│   │   └── utils.ts                # cn utility
+│   ├── types/
+│   │   └── image.ts                # ImageType type
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── setupTests.ts
+├── .gitignore
+├── components.json
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+└── vite.config.ts
+```
+
+## Quality
+
+Lighthouse in production: Performance 98 on desktop and 91 on mobile. Accessibility 100, Best Practices 100 and SEO 92 on both.
+
+## Future Implementations
+
+- Migrate drag and drop to dnd-kit (touch and keyboard support).
+
+## Demo
+
+<p align="center">
+  <img src="docs/screenshot.png" alt="Desktop gallery with the featured image" height="200" />
+  <img src="docs/screenshot-selection.png" alt="Multiple selection with the delete selected button" height="200" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshot-mobile.png" alt="Mobile view of the gallery" height="420" />
+</p>
+
+## Author
+
+**Yanet Pérez** · [GitHub](https://github.com/ypmodev)
