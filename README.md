@@ -69,7 +69,6 @@ image-gallery/
 ├── index.html
 ├── package.json
 ├── package-lock.json
-├── README.md
 ├── tsconfig.json
 ├── tsconfig.app.json
 ├── tsconfig.node.json
