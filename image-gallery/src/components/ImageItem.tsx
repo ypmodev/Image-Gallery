@@ -59,6 +59,9 @@ const ImageItem = ({
       <img
         src={imageProp.url}
         alt={imageProp.description}
+        width={400}
+        height={400}
+        loading={isFeatured ? "eager" : "lazy"}
         draggable={false}
         className="aspect-square w-full rounded-lg object-cover transition-opacity duration-200 hover:opacity-80"
       />
