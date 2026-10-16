@@ -1,58 +1,41 @@
 import { useState } from "react";
 
 import ImageItem from "./ImageItem";
-import { imagesData } from "../data/imagesData";
-import type { ImageType } from "../types/image";
+import { useImages } from "../hooks/useImageManagement";
+import { useImageSelection } from "../hooks/useImageSelection";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const Gallery = () => {
-  const [imagesState, setImagesState] = useState<ImageType[]>(imagesData);
+  const { imagesState, filterImagesById, moveImage } = useImages();
+  const {
+    selectedIds,
+    handleToggleSelect,
+    removeFromSelection,
+    clearSelection,
+  } = useImageSelection();
+
   const [draggedIdState, setDraggedIdState] = useState<number | null>(null);
   const [dragOverIdState, setDragOverIdState] = useState<number | null>(null);
-  const [selectedIdsState, setSelectedIdsState] = useState<Set<number>>(
-    new Set(),
-  );
 
   const handleDelete = (idDelete: number) => {
     const isConfirmed = window.confirm("¿Deseas eliminar esta imagen?");
 
     if (isConfirmed) {
-      const remainingImages = imagesState.filter(
-        (item) => item.id !== idDelete,
-      );
-      setImagesState(remainingImages);
-
-      const newSelectedIds = new Set(selectedIdsState);
-      newSelectedIds.delete(idDelete);
-      setSelectedIdsState(newSelectedIds);
+      filterImagesById(new Set([idDelete]));
+      removeFromSelection(idDelete);
 
       toast.success("Imagen eliminada");
     }
   };
 
-  const handleToggleSelect = (id: number) => {
-    const newSelectedIds = new Set(selectedIdsState);
-
-    if (newSelectedIds.has(id)) {
-      newSelectedIds.delete(id);
-    } else {
-      newSelectedIds.add(id);
-    }
-
-    setSelectedIdsState(newSelectedIds);
-  };
-
   const handleDeleteSelected = () => {
-    const count = selectedIdsState.size;
+    const count = selectedIds.size;
     const isConfirmed = window.confirm(`¿Eliminar las imágenes seleccionadas?`);
 
     if (isConfirmed) {
-      const remainingImages = imagesState.filter(
-        (item) => !selectedIdsState.has(item.id),
-      );
-      setImagesState(remainingImages);
-      setSelectedIdsState(new Set());
+      filterImagesById(selectedIds);
+      clearSelection();
 
       toast.success(`Imágenes eliminadas: ${count}`);
     }
@@ -77,29 +60,20 @@ const Gallery = () => {
       return;
     }
 
-    const fromIndex = imagesState.findIndex(
-      (item) => item.id === draggedIdState,
-    );
-    const toIndex = imagesState.findIndex((item) => item.id === destinationId);
-
-    const reorderedImages = [...imagesState];
-    const [movedImage] = reorderedImages.splice(fromIndex, 1);
-    reorderedImages.splice(toIndex, 0, movedImage);
-
-    setImagesState(reorderedImages);
+    moveImage(draggedIdState, destinationId);
     resetDragState();
   };
 
   return (
     <>
-      {selectedIdsState.size > 0 && (
+      {selectedIds.size > 0 && (
         <div className="mb-4 flex justify-end">
           <Button
             variant="destructive"
             onClick={handleDeleteSelected}
             className="bg-pink-100 text-red-600 shadow-sm hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white"
           >
-            Eliminar seleccionadas ({selectedIdsState.size})
+            Eliminar seleccionadas ({selectedIds.size})
           </Button>
         </div>
       )}
@@ -113,7 +87,7 @@ const Gallery = () => {
             key={item.id}
             imageProp={item}
             isFeatured={index === 0}
-            isSelected={selectedIdsState.has(item.id)}
+            isSelected={selectedIds.has(item.id)}
             isDragging={draggedIdState === item.id}
             isDragOver={
               dragOverIdState === item.id && draggedIdState !== item.id
